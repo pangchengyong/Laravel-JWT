@@ -13,17 +13,14 @@
 1.解决办法：session数据持久化，写入数据库或者其他一些持久层，搭建session共享服务器，优点：架构清晰，缺点：工程量大。另外session服务器还得做双机备份，避免session服务器挂掉用户登录失败。  
 2.服务器不保存session，所有数据都放入到客户端保存，每次请求都发回到服务器，例如JWT。
 
-<<<<<<< HEAD
-##`JWT 的原理`
-简单点说就是一把要是一把锁的问题。服务器根据提交的用户名和密码认证后会生成一个token发回给客户端。  
-=======
 ## `JWT 的原理`
 服务器根据提交的用户名和密码认证后会生成一个token发回给客户端。  
->>>>>>> f95553d1663bfa07e90f1adc15768d80da9e0176
 以后用户与服务器通信都需要携带这个token，服务器就不保存任何 session 数据了。  
 也就是说，服务器变成无状态了，从而比较容易实现扩展。  
+
 ## JWT的组成
 `Header（头部）` `Payload（负载）` `Signature（签名）`  
+
 ### Header
 Header 部分是一个 JSON 对象，描述 JWT 的元数据
 ```$json
@@ -43,6 +40,7 @@ aud (audience)：受众
 nbf (Not Before)：生效时间  
 iat (Issued At)：签发时间  
 jti (JWT ID)：编号  
+
 除了官方字段，你还可以在这个部分定义私有字段，下面就是一个例子。  
 ```$json
 base64 encoded
@@ -53,6 +51,7 @@ base64 encoded
 }
 ```
 JWT 默认是不加密的，任何人都可以读到，所以不要把秘密信息放在这个部分。  
+
 ## Signature
 Signature 部分是对前两部分的签名，防止数据篡改。  
 生成token需要指定一个密钥（secret）。  
@@ -67,15 +66,12 @@ HMACSHA256(
 ```
 算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用"点"（.）分隔，就可以返回给用户。  
 `一般生成签名后在加密一次发送给client`
-<<<<<<< HEAD
-类似如下：
+
 ```$xslt
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
-##JWT 的几个特点
-=======
+
 ## JWT 的几个特点
->>>>>>> f95553d1663bfa07e90f1adc15768d80da9e0176
 （1）JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。  
 （2）JWT 不加密的情况下，不能将秘密数据写入 JWT。  
 （3）JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。  
