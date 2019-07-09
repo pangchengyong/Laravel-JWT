@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('login','Login@login');
+
+Route::middleware(['jwt'])->group(function () {
+    Route::get('userInfo', 'User@userDetail');
+});

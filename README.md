@@ -1,33 +1,39 @@
-# Laravel-JWT
+# [Laravel-JWT](https://jwt.io/)
 采用Laravel最新版5.8实现JWT用户登录认证分配Token
 
-##互联网用户认证流程
+## 互联网用户认证流程
 1、用户向服务器发送用户名和密码。  
 2、服务器验证通过后，在当前对话（session）里面保存相关数据，比如用户角色、登录时间等等。  
 3、服务器向用户返回一个 session_id，写入用户的 Cookie。  
 4、用户随后的每一次请求，都会通过 Cookie，将 session_id 传回服务器。  
 5、服务器收到 session_id，找到前期保存的数据，由此得知用户的身份。  
 
-##原始认证模式存在的问题  
+## 原始认证模式存在的问题  
 `扩展性不好` 单机没有问题，如果是服务器集群就需要session共享，每台服务器都需要读取到session。    
 1.解决办法：session数据持久化，写入数据库或者其他一些持久层，搭建session共享服务器，优点：架构清晰，缺点：工程量大。另外session服务器还得做双机备份，避免session服务器挂掉用户登录失败。  
 2.服务器不保存session，所有数据都放入到客户端保存，每次请求都发回到服务器，例如JWT。
 
+<<<<<<< HEAD
 ##`JWT 的原理`
+简单点说就是一把要是一把锁的问题。服务器根据提交的用户名和密码认证后会生成一个token发回给客户端。  
+=======
+## `JWT 的原理`
 服务器根据提交的用户名和密码认证后会生成一个token发回给客户端。  
+>>>>>>> f95553d1663bfa07e90f1adc15768d80da9e0176
 以后用户与服务器通信都需要携带这个token，服务器就不保存任何 session 数据了。  
 也就是说，服务器变成无状态了，从而比较容易实现扩展。  
-##JWT的组成
+## JWT的组成
 `Header（头部）` `Payload（负载）` `Signature（签名）`  
-###Header
+### Header
 Header 部分是一个 JSON 对象，描述 JWT 的元数据
 ```$json
+base64 encoded
 {
   "alg": "HS256", //alg属性表示签名的算法（algorithm），默认是 HMAC SHA256（写成 HS256）
   "typ": "JWT" //typ属性表示这个令牌（token）的类型（type），JWT 令牌统一写为JWT
 }
 ```
-###Payload
+### Payload
 Payload 部分也是一个 JSON 对象，用来存放实际需要传递的数据。  
 JWT 规定了7个官方字段，供选用。  
 iss (issuer)：签发人   
@@ -39,6 +45,7 @@ iat (Issued At)：签发时间
 jti (JWT ID)：编号  
 除了官方字段，你还可以在这个部分定义私有字段，下面就是一个例子。  
 ```$json
+base64 encoded
 {
   "sub": "1234567890",
   "name": "John Doe",
@@ -46,7 +53,7 @@ jti (JWT ID)：编号
 }
 ```
 JWT 默认是不加密的，任何人都可以读到，所以不要把秘密信息放在这个部分。  
-##Signature
+## Signature
 Signature 部分是对前两部分的签名，防止数据篡改。  
 生成token需要指定一个密钥（secret）。  
 这个密钥只有服务器才知道，不能泄露给用户。  
@@ -60,7 +67,15 @@ HMACSHA256(
 ```
 算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用"点"（.）分隔，就可以返回给用户。  
 `一般生成签名后在加密一次发送给client`
+<<<<<<< HEAD
+类似如下：
+```$xslt
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
 ##JWT 的几个特点
+=======
+## JWT 的几个特点
+>>>>>>> f95553d1663bfa07e90f1adc15768d80da9e0176
 （1）JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。  
 （2）JWT 不加密的情况下，不能将秘密数据写入 JWT。  
 （3）JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。  
